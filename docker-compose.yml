@@ -1,0 +1,81 @@
+# docker-compose.yml
+
+services:
+  node1:
+    build: .
+    container_name: node1
+    ports:
+      - "8001:8001"
+    command: [
+      "./king-algorithm",
+      "-id=1",
+      "-role=leal",
+      "-address=0.0.0.0:8001",
+      "-peers=2:node2:8002,3:node3:8003,4:node4:8004,5:node5:8005"
+    ]
+    networks:
+      - king-net
+
+  node2:
+    build: .
+    container_name: node2
+    ports:
+      - "8002:8002"
+    command: [
+      "./king-algorithm",
+      "-id=2",
+      "-role=leal",
+      "-address=0.0.0.0:8002",
+      "-peers=1:node1:8001,3:node3:8003,4:node4:8004,5:node5:8005"
+    ]
+    networks:
+      - king-net
+
+  node3:
+    build: .
+    container_name: node3
+    ports:
+      - "8003:8003"
+    command: [
+      "./king-algorithm",
+      "-id=3",
+      "-role=leal",
+      "-address=0.0.0.0:8003",
+      "-peers=1:node1:8001,2:node2:8002,4:node4:8004,5:node5:8005"
+    ]
+    networks:
+      - king-net
+
+  node4:
+    build: .
+    container_name: node4
+    ports:
+      - "8004:8004"
+    command: [
+      "./king-algorithm",
+      "-id=4",
+      "-role=leal",
+      "-address=0.0.0.0:8004",
+      "-peers=1:node1:8001,2:node2:8002,3:node3:8003,5:node5:8005"
+    ]
+    networks:
+      - king-net
+
+  node5:
+    build: .
+    container_name: node5
+    ports:
+      - "8005:8005"
+    command: [
+      "./king-algorithm",
+      "-id=5",
+      "-role=traidor",
+      "-address=0.0.0.0:8005",
+      "-peers=1:node1:8001,2:node2:8002,3:node3:8003,4:node4:8004"
+    ]
+    networks:
+      - king-net
+
+networks:
+  king-net:
+    driver: bridge
